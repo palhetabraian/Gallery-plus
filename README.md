@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Gallery Plus
 
 ## Getting started
@@ -19,3 +20,6 @@ In another terminal run the frontend server
 ```
 pnpm dev
 ```
+=======
+# Gallery-plus
+>>>>>>> 23297d2077407defe525e5f4be9ab829ec7c6613
