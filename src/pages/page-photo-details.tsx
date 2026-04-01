@@ -6,11 +6,12 @@ import Skeleton from '../components/skeleton';
 import PhotosNavigator from '../contexts/photos/components/photos-navigator';
 import ImagePreview from '../components/image-preview';
 import Button from '../components/button';
+import AlbumsListSelectable from '../contexts/albums/components/albums-list-selectable';
 
 export default function PagePhotoDetails() {
     const { id } = useParams();
     // apenas para fazer o teste do mock
-    const isLoadingPhoto = true;
+    const isLoadingPhoto = false;
     const photo = {
         id: '123',
         title: 'Ola mundo',
@@ -26,7 +27,9 @@ export default function PagePhotoDetails() {
         <Container>
             <header className="flex items-center justify-between gap-8 mb-8">
                 {!isLoadingPhoto ? (
-                    <Text variant="heading-large">{photo?.title}</Text>
+                    <Text as="h2" variant="heading-large">
+                        {photo?.title}
+                    </Text>
                 ) : (
                     <Skeleton className="w-48 h-8" />
                 )}
@@ -34,7 +37,7 @@ export default function PagePhotoDetails() {
                 <PhotosNavigator loading={isLoadingPhoto} />
             </header>
 
-            <div className="grid grid-cols-[21rem] gap-24">
+            <div className="grid grid-cols-[21rem_1fr] gap-24">
                 <div className="space-y-3">
                     {!isLoadingPhoto ? (
                         <ImagePreview
@@ -50,6 +53,22 @@ export default function PagePhotoDetails() {
                     ) : (
                         <Skeleton className="w-20 h-10" />
                     )}
+                </div>
+
+                <div className="py-3">
+                    <Text as="h3" variant="heading-medium" className="mb-6">
+                        Álbuns
+                    </Text>
+
+                    <AlbumsListSelectable
+                        photo={photo}
+                        albums={[
+                            { id: '321', title: 'album 1' },
+                            { id: '123', title: 'album 2' },
+                            { id: '456', title: 'album 3' },
+                        ]}
+                        loading={isLoadingPhoto}
+                    />
                 </div>
             </div>
         </Container>
