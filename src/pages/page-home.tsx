@@ -2,38 +2,17 @@ import Container from '../components/container';
 import AlbumsFilter from '../contexts/albums/components/albums-filter';
 import useAlbums from '../contexts/albums/hooks/use-albums';
 import PhotosList from '../contexts/photos/components/photos-list';
+import usePhotos from '../contexts/photos/hooks/use-photos';
 
 export default function PageHome() {
     const { albums, isLoadingAlbums } = useAlbums();
+    const { photos, isLoadingPhotos } = usePhotos();
 
     return (
         <Container>
             <AlbumsFilter albums={albums} loading={isLoadingAlbums} className="mb-9" />
 
-            <PhotosList
-                photos={[
-                    {
-                        id: '123',
-                        title: 'Ola mundo',
-                        imageId: 'portrait-tower.png',
-                        albums: [
-                            { id: '321', title: 'album 1' },
-                            { id: '123', title: 'album 2' },
-                            { id: '456', title: 'album 3' },
-                        ],
-                    },
-                    {
-                        id: '321',
-                        title: 'Ola mundo',
-                        imageId: 'portrait-tower.png',
-                        albums: [
-                            { id: '321', title: 'album 1' },
-                            { id: '123', title: 'album 2' },
-                            { id: '456', title: 'album 3' },
-                        ],
-                    },
-                ]}
-            />
+            <PhotosList photos={photos} loading={isLoadingPhotos} />
         </Container>
     );
 }
