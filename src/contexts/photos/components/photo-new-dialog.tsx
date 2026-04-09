@@ -35,11 +35,26 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
     const file = form.watch('file');
     const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
 
+    const albumsIds = form.watch('albumsIds');
+
     React.useEffect(() => {
         if (!modalOpen) {
             form.reset();
         }
     }, [modalOpen, form]);
+
+    function handleToggleAlbum(albumId: string) {
+        const albumsIds = form.getValues('albumsIds') || [];
+        const albumSet = new Set(albumsIds);
+
+        if (albumSet.has(albumId)) {
+            albumSet.delete(albumId);
+        } else {
+            albumSet.add(albumId);
+        }
+
+        form.setValue('albumsIds', Array.from(albumSet));
+    }
 
     function handleSubmit(payload: PhotoNewFormSchema) {
         console.log(payload);
@@ -82,7 +97,13 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
                                 {!isLoadingAlbums &&
                                     albums.length > 0 &&
                                     albums.map((album) => (
-                                        <Button key={album.id} variant="ghost" size="sm" className="truncante">
+                                        <Button
+                                            key={album.id}
+                                            variant={albumsIds?.includes(album.id) ? 'primary' : 'ghost'}
+                                            size="sm"
+                                            className="truncante"
+                                            onClick={() => handleToggleAlbum(album.id)}
+                                        >
                                             {album.title}
                                         </Button>
                                     ))}
