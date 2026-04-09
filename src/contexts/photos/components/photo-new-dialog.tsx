@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import React from 'react';
 import Alert from '../../../components/alert';
 import Button from '../../../components/button';
 import {
@@ -24,6 +25,8 @@ interface PhotoNewDialogProps {
 }
 
 export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
+    const [modalOpen, setModalOpen] = React.useState(false);
+
     const form = useForm<PhotoNewFormSchema>({
         resolver: zodResolver(photoNewFormSchema), // ele vai resolver o formulario, com base no schema que passar
     });
@@ -32,12 +35,18 @@ export default function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
     const file = form.watch('file');
     const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
 
+    React.useEffect(() => {
+        if (!modalOpen) {
+            form.reset();
+        }
+    }, [modalOpen, form]);
+
     function handleSubmit(payload: PhotoNewFormSchema) {
         console.log(payload);
     }
 
     return (
-        <Dialog>
+        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
